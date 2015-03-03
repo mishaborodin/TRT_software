@@ -20,7 +20,9 @@ def create_PID_folder(db):
     folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
                                        spec,
                                        cool.PayloadMode.VECTORPAYLOAD)
-    return db.createFolder(FOLDER_NAME, folder_spec, True)
+    return db.createFolder(FOLDER_NAME, folder_spec,
+                           ' <timeStamp>time</timeStamp><addrHeader><address_header service_type="71" clid="55403898"/></addrHeader><typeName>CondAttrListVec</typeName>',
+                           True)
 
 
 def store_PID_to_folder(folder,values_dict):
