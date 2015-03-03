@@ -4,7 +4,7 @@ import sys
 import logging
 from PyCool import cool
 
-FOLDER_NAME = ''
+FOLDER_NAME = '/TRT/Calib/PID_vector'
 
 _logger = logging.getLogger('createPIDTool')
 
