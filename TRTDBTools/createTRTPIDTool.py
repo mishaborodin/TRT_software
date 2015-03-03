@@ -84,8 +84,7 @@ def main():
         except Exception,e:
             _logger.error("Problem with database: %s" % e)
             return -1
-        folder = store_PID_to_folder(db)
-        store_PID_to_folder(folder,values_dict)
+        store_PID_to_folder(db, values_dict)
         db.closeDatabase()
 
 if __name__=='__main__':
