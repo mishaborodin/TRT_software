@@ -19,7 +19,8 @@ def create_PID_folder(db):
     spec.extend('array_value',cool.StorageType.Float)
     folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
                                        spec,
-                                       cool.PayloadMode.VECTORPAYLOAD)
+                                       cool.PayloadMode.VECTORPAYLOAD,
+                                       True)
     return db.createFolder(FOLDER_NAME, folder_spec)
 
 
