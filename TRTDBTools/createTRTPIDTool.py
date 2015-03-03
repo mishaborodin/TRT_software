@@ -69,7 +69,7 @@ def read_PID_txt(input_file_name):
 
 def main():
 
-        if len(sys.argv) != 4:
+        if len(sys.argv) != 3:
             print "Usage: %s input_file connection_string" % sys.argv[0]
             return -1
         values_dict = read_PID_txt(sys.argv[1])
