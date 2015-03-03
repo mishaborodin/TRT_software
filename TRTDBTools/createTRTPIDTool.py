@@ -32,7 +32,7 @@ def store_PID_to_folder(db,values_list):
                                True)
 
         for index, channel_name in enumerate(values_list):
-            folder.createChannel(index,channel_name)
+            folder.createChannel(index,channel_name[0])
             print '%i - %s' % (index, channel_name[0])
         folder.setupStorageBuffer()
         for index, channel_values in enumerate(values_list):
