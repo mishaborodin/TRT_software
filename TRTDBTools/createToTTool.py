@@ -7,7 +7,7 @@ import logging
 from PyCool import cool
 
 FOLDER_NAME = '/TRT/ToT/ToTVectors'
-TAG_NAME = 'TRTToTTotVectors-000-01'
+TAG_NAME = 'TRTToTToTectors-000-01'
 
 logging.basicConfig(level=logging.DEBUG)
 _logger = logging.getLogger('createToTTool')
@@ -46,6 +46,46 @@ def store_ToT_to_folder(db,values_list):
                 data.get()['array_value'] = value
                 vector.push_back(data)
             folder.storeObject(0,cool.ValidityKeyMax, vector, index, TAG_NAME )
+        folder.flushStorageBuffer()
+        spec = cool.RecordSpecification()
+        ToT_values = {}
+        ToT_values['paraL_dEdx_p1'] = -0.192682
+        ToT_values['paraL_dEdx_p2'] = -6.95687
+        ToT_values['paraL_dEdx_p3'] = -0.974757
+        ToT_values['paraL_dEdx_p4'] = 1.27633
+        ToT_values['paraL_dEdx_p5'] = -0.014986
+
+        ToT_values['para_dEdx_p1'] = -0.206938
+        ToT_values['para_dEdx_p2'] = -7.55895
+        ToT_values['para_dEdx_p3'] = -0.991186
+        ToT_values['para_dEdx_p4'] = 1.26495
+
+        ToT_values['para_dEdx_p5'] = -0.0043035
+
+
+        ToT_values['norm_offset_data'] = 0.07
+        ToT_values['norm_slope_tot'] =  0.0035
+        ToT_values['norm_slope_totl'] =  0.0031
+        ToT_values['norm_offset_tot'] =  0.930
+        ToT_values['norm_offset_totl'] =  0.975
+
+
+        for field_name in ToT_values.keys():
+            spec.extend(field_name,cool.StorageType.Float)
+        ToT_values['norm_nzero'] = 8
+        spec.extend('norm_nzero',cool.StorageType.Float)
+
+        _logger.info('Create folder /TRT/ToT/ToTValue' )
+        folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
+                                           spec,
+                                           cool.PayloadMode.SEPARATEPAYLOAD)
+        folder = db.createFolder(FOLDER_NAME, folder_spec,
+                               ' <timeStamp>run-lumi</timeStamp><addrHeader><address_header service_type="71" clid="1238547719"/></addrHeader><typeName>CondAttrListCollection</typeName>',
+                               True)
+        data =  cool.Record( spec )
+        for field_name in ToT_values.keys():
+            data[field_name] = ToT_values[field_name]
+        folder.storeObject(0,cool.ValidityKeyMax, data, 0, 'TRTToTToTValue-000-01' )
         folder.flushStorageBuffer()
 
 
