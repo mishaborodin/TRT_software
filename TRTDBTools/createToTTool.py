@@ -73,7 +73,7 @@ def store_ToT_to_folder(db,values_list):
         for field_name in ToT_values.keys():
             spec.extend(field_name,cool.StorageType.Float)
         ToT_values['norm_nzero'] = 8
-        spec.extend('norm_nzero',cool.StorageType.Float)
+        spec.extend('norm_nzero',cool.StorageType.Int32)
 
         _logger.info('Create folder /TRT/ToT/ToTValue' )
         folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
