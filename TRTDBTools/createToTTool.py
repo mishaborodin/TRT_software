@@ -79,7 +79,7 @@ def store_ToT_to_folder(db,values_list):
         folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
                                            spec,
                                            cool.PayloadMode.SEPARATEPAYLOAD)
-        folder = db.createFolder(FOLDER_NAME, folder_spec,
+        folder = db.createFolder('/TRT/ToT/ToTValue', folder_spec,
                                ' <timeStamp>run-lumi</timeStamp><addrHeader><address_header service_type="71" clid="1238547719"/></addrHeader><typeName>CondAttrListCollection</typeName>',
                                True)
         data =  cool.Record( spec )
