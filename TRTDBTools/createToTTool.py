@@ -61,7 +61,7 @@ def read_ToT():
 
 def main():
 
-        if len(sys.argv) != 3:
+        if len(sys.argv) != 2:
             print "Usage: %s  connection_string" % sys.argv[0]
             return -1
         values_dict = read_ToT()
