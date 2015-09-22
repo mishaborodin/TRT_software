@@ -93,7 +93,7 @@ def read_ToT():
         output_list=[]
         # dict_name_lists = ['resolution','resolution_e','para_long_corrRZ_MC','para_short_corrRZ_MC','para_end_corrRZ_MC','para_long_corrRZL_MC',
         #               'para_short_corrRZL_MC','para_end_corrRZL_MC']
-        dict_name_lists = ['resolution','resolution_e','para_long_corrRZ_DATA','para_short_corrRZ_DATA','para_end_corrRZ_DATA','para_long_corrRZL_DATA',
+        dict_name_lists = ['resolution','resolution_e','para_long_corrRZ','para_short_corrRZ','para_end_corrRZ','para_long_corrRZL_DATA',
                       'para_short_corrRZL_DATA','para_end_corrRZL_DATA']
         print ','.join(['"'+x+'"' for x in dict_name_lists])
         from fillToT import PreFilledToT
