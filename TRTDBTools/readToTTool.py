@@ -6,19 +6,35 @@ from PyCool import cool
 
 FOLDER_NAME = '/TRT/Calib/ToT/ToTVectors'
 
+CHANNEL_NAME_LIST = ['resolution','resolution_e','para_long_corrRZ','para_short_corrRZ','para_end_corrRZ','para_long_corrRZL_DATA',
+              'para_short_corrRZL_DATA','para_end_corrRZL_DATA']
+
 logging.basicConfig(level=logging.DEBUG)
 _logger = logging.getLogger('readToT')
 
 
 
-def  load_data(db, tag):
+def load_data(db, tag):
+    """
+
+    :param db: open cool db connection
+    :param tag: tag name
+    :return: list of tuples (dict name, dict values) which read from last IOV FOLDER_NAME vector folder
+    """
     folder = db.getFolder(FOLDER_NAME)
     objects = folder.browseObjects(cool.ValidityKeyMin, cool.ValidityKeyMax, cool.ChannelSelection.all(), tag)
+    dicts_from_cool = {}
     for item in objects:
-        print "IOV [%d, %d[ c:%s " % ( item.since(), item.until(), item.channelId() )
+        print "IOV [%d, %d[ c:%s " % ( item.since(), item.until(), CHANNEL_NAME_LIST[int(item.channelId())] )
+        dicts_from_cool[CHANNEL_NAME_LIST[int(item.channelId())]] = []
         for payload in item.payloadIterator():
-            print payload,
+            print payload.get()['array_value'],
+            dicts_from_cool[CHANNEL_NAME_LIST[int(item.channelId())]].append(payload.get()['array_value'])
         print ''
+    return_list = []
+    for channel_name in CHANNEL_NAME_LIST:
+        return_list.append((channel_name,dicts_from_cool[channel_name]))
+    return return_list
 
 
 def main():
@@ -36,6 +52,8 @@ def main():
             _logger.error("Problem with database: %s" % e)
             return -1
         data_dict = load_data(db,tag)
+        print data_dict
+
         db.closeDatabase()
 
 if __name__=='__main__':
