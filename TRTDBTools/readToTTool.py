@@ -47,10 +47,10 @@ def readToTFolder(db_name,tag_name):
             _logger.error("Problem with database: %s" % e)
             raise e
         data_dict = load_data(db,tag_name)
-        print data_dict
-
         db.closeDatabase()
+        return  data_dict
 
+        
 def main():
 
         if len(sys.argv) != 3:
