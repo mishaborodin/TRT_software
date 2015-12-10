@@ -4,7 +4,7 @@ import sys
 import logging
 from PyCool import cool
 
-FOLDER_NAME = '/TRT/ToT/ToTVectors'
+FOLDER_NAME = '/TRT/Calib/ToT/ToTVectors'
 
 logging.basicConfig(level=logging.DEBUG)
 _logger = logging.getLogger('readToT')
@@ -30,7 +30,7 @@ def main():
         try:
             connect_string = "oracle://ATLAS_COOLPROD;schema=ATLAS_COOLOFL_TRT;dbname={dbname}".format(dbname=sys.argv[1])
             dbSvc = cool.DatabaseSvcFactory.databaseService()
-            _logger.debug('Open database connect_string')
+            _logger.debug('Open database %s' % connect_string)
             db = dbSvc.openDatabase( connect_string )
         except Exception,e:
             _logger.error("Problem with database: %s" % e)
