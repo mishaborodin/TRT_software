@@ -25,36 +25,39 @@ def load_data(db, tag):
     objects = folder.browseObjects(cool.ValidityKeyMin, cool.ValidityKeyMax, cool.ChannelSelection.all(), tag)
     dicts_from_cool = {}
     for item in objects:
-        print "IOV [%d, %d[ c:%s " % ( item.since(), item.until(), CHANNEL_NAME_LIST[int(item.channelId())] )
+        #print "IOV [%d, %d[ c:%s " % ( item.since(), item.until(), CHANNEL_NAME_LIST[int(item.channelId())] )
         dicts_from_cool[CHANNEL_NAME_LIST[int(item.channelId())]] = []
         for payload in item.payloadIterator():
-            print payload.get()['array_value'],
+            #print payload.get()['array_value'],
             dicts_from_cool[CHANNEL_NAME_LIST[int(item.channelId())]].append(payload.get()['array_value'])
-        print ''
+        #print ''
     return_list = []
     for channel_name in CHANNEL_NAME_LIST:
         return_list.append((channel_name,dicts_from_cool[channel_name]))
     return return_list
 
 
-def main():
-
-        if len(sys.argv) != 3:
-            print "Usage: %s  db tag" % sys.argv[0]
-            return -1
-        tag = sys.argv[2]
+def readToTFolder(db_name,tag_name):
         try:
-            connect_string = "oracle://ATLAS_COOLPROD;schema=ATLAS_COOLOFL_TRT;dbname={dbname}".format(dbname=sys.argv[1])
+            connect_string = "oracle://ATLAS_COOLPROD;schema=ATLAS_COOLOFL_TRT;dbname={dbname}".format(dbname=db_name)
             dbSvc = cool.DatabaseSvcFactory.databaseService()
             _logger.debug('Open database %s' % connect_string)
             db = dbSvc.openDatabase( connect_string )
         except Exception,e:
             _logger.error("Problem with database: %s" % e)
-            return -1
-        data_dict = load_data(db,tag)
+            raise e
+        data_dict = load_data(db,tag_name)
         print data_dict
 
         db.closeDatabase()
+
+def main():
+
+        if len(sys.argv) != 3:
+            print "Usage: %s  db tag" % sys.argv[0]
+            return -1
+        print readToTFolder(sys.argv[1],sys.argv[2])
+
 
 if __name__=='__main__':
         main()
