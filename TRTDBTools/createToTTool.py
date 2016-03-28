@@ -96,13 +96,13 @@ def read_ToT(is_data=True):
 
         full_dict_names = ['para_end_corrRZL_DATA_Ar', 'para_end_corrRZL_DATA_Xe', 'para_end_corrRZL_MC_Ar', 'para_end_corrRZL_MC_Xe', 'para_end_corrRZ_Ar', 'para_end_corrRZ_MC_Ar', 'para_end_corrRZ_MC_Xe', 'para_end_corrRZ_Xe', 'para_end_mimicToXe_DATA_Ar', 'para_end_mimicToXe_DATA_Xe', 'para_end_mimicToXe_MC_Ar', 'para_end_mimicToXe_MC_Xe', 'para_long_corrRZL_DATA_Ar', 'para_long_corrRZL_DATA_Xe', 'para_long_corrRZL_MC_Ar', 'para_long_corrRZL_MC_Xe', 'para_long_corrRZ_Ar', 'para_long_corrRZ_MC_Ar', 'para_long_corrRZ_MC_Xe', 'para_long_corrRZ_Xe', 'para_long_mimicToXe_DATA_Ar', 'para_long_mimicToXe_DATA_Xe', 'para_long_mimicToXe_MC_Ar', 'para_long_mimicToXe_MC_Xe', 'para_short_corrRZL_DATA_Ar', 'para_short_corrRZL_DATA_Xe', 'para_short_corrRZL_MC_Ar', 'para_short_corrRZL_MC_Xe', 'para_short_corrRZ_Ar', 'para_short_corrRZ_MC_Ar', 'para_short_corrRZ_MC_Xe', 'para_short_corrRZ_Xe', 'para_short_mimicToXe_DATA_Ar', 'para_short_mimicToXe_DATA_Xe', 'para_short_mimicToXe_MC_Ar', 'para_short_mimicToXe_MC_Xe', 'resolution_Ar', 'resolution_Xe', 'resolution_e_Ar', 'resolution_e_Xe']
         if is_data:
-            dict_name_lists = [x for x in full_dict_names if (('MC' not in x) and ('_Xe' in x))]
-            dict_name_lists += [x for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
-            dict_name_lists += [x.replace('_Ar','_Kr') for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
+            dict_name_lists = [x.replace('_DATA_','') for x in full_dict_names if (('MC' not in x) and ('_Xe' in x))]
+            dict_name_lists += [x.replace('_DATA_','') for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
+            dict_name_lists += [x.replace('_Ar','_Kr').replace('_DATA_','') for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
         else:
-            dict_name_lists = [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Xe' in x))]
-            dict_name_lists += [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Ar' in x))]
-            dict_name_lists += [x.replace('_Ar','_Kr') for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Ar' in x))]
+            dict_name_lists = [x.replace('_MC_','') for x in full_dict_names if ((('MC' in x) or ('resolution' in x)) and ('_Xe' in x))]
+            dict_name_lists += [x.replace('_MC_','') for x in full_dict_names if ((('MC' in x) or ('resolution' in x)) and ('_Ar' in x))]
+            dict_name_lists += [x.replace('_Ar','_Kr').replace('_MC_','') for x in full_dict_names if ((('MC' in x) or ('resolution' in x)) and ('_Ar' in x))]
         print ','.join(['"'+x+'"' for x in dict_name_lists])
         from fullEDx import FullEdx
         for current_dict in dict_name_lists:
@@ -115,7 +115,7 @@ def main():
         if len(sys.argv) != 3:
             print "Usage: %s  connection_string data|mc" % sys.argv[0]
             return -1
-        if sys.argv[2] !='mc':
+        if sys.argv[2] =='mc':
             values_dict = read_ToT(False)
         else:
             values_dict = read_ToT(True)
