@@ -32,7 +32,7 @@ def store_ToT_to_folder(db,values_list):
         folder = db.createFolder(FOLDER_NAME, folder_spec,
                                ' <timeStamp>run-lumi</timeStamp><addrHeader><address_header service_type="71" clid="55403898"/></addrHeader><typeName>CondAttrListVec</typeName>',
                                True)
-        values_list = [(x[0],x[1]) for x in values_list]
+        values_list = [(x[0].replace('_MC_','').replace('_DATA_',''),x[1]) for x in values_list]
         print ','.join(['"'+x[0]+'"' for x in values_list])
         for index, channel_name in enumerate(values_list):
             folder.createChannel(index,channel_name[0])
