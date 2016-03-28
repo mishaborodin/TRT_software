@@ -6,8 +6,8 @@ import sys
 import logging
 from PyCool import cool
 
-FOLDER_NAME = '/TRT/ToT/ToTVectors'
-TAG_NAME = 'TRTToTToTectors-000-01'
+FOLDER_NAME = '/TRT/Calib/ToT/ToTVectors'
+TAG_NAME = 'TRTCalibToTToTVectors-000-02'
 
 logging.basicConfig(level=logging.DEBUG)
 _logger = logging.getLogger('createToTTool')
@@ -59,55 +59,66 @@ def store_ToT_to_folder(db,values_list):
         ToT_values['para_dEdx_p2'] = -7.55895
         ToT_values['para_dEdx_p3'] = -0.991186
         ToT_values['para_dEdx_p4'] = 1.26495
-
         ToT_values['para_dEdx_p5'] = -0.0043035
-
-
         ToT_values['norm_offset_data'] = 0.07
         ToT_values['norm_slope_tot'] =  0.0035
         ToT_values['norm_slope_totl'] =  0.0031
         ToT_values['norm_offset_tot'] =  0.930
         ToT_values['norm_offset_totl'] =  0.975
 
-
         for field_name in ToT_values.keys():
             spec.extend(field_name,cool.StorageType.Float)
         ToT_values['norm_nzero'] = 8
         spec.extend('norm_nzero',cool.StorageType.Int32)
 
-        _logger.info('Create folder /TRT/ToT/ToTValue' )
+        _logger.info('Create folder /TRT/Calib/ToT/ToTValue' )
         folder_spec = cool.FolderSpecification(cool.FolderVersioning.MULTI_VERSION,
                                            spec,
                                            cool.PayloadMode.SEPARATEPAYLOAD)
-        folder = db.createFolder('/TRT/ToT/ToTValue', folder_spec,
+        folder = db.createFolder('/TRT/Calib/ToT/ToTValue', folder_spec,
                                ' <timeStamp>run-lumi</timeStamp><addrHeader><address_header service_type="71" clid="1238547719"/></addrHeader><typeName>CondAttrListCollection</typeName>',
                                True)
         data =  cool.Record( spec )
         for field_name in ToT_values.keys():
             data[field_name] = ToT_values[field_name]
-        folder.storeObject(0,cool.ValidityKeyMax, data, 0, 'TRTToTToTValue-000-01' )
+        folder.storeObject(0,cool.ValidityKeyMax, data, 0, 'TRTCalibToTToTValue-000-02' )
+        folder.storeObject(0,cool.ValidityKeyMax, data, 1, 'TRTCalibToTToTValue-000-02' )
+        folder.storeObject(0,cool.ValidityKeyMax, data, 2, 'TRTCalibToTToTValue-000-02' )
         folder.flushStorageBuffer()
 
 
-def read_ToT():
+def read_ToT(is_data=True):
         output_list=[]
         # dict_name_lists = ['resolution','resolution_e','para_long_corrRZ_MC','para_short_corrRZ_MC','para_end_corrRZ_MC','para_long_corrRZL_MC',
         #               'para_short_corrRZL_MC','para_end_corrRZL_MC']
-        dict_name_lists = ['resolution','resolution_e','para_long_corrRZ','para_short_corrRZ','para_end_corrRZ','para_long_corrRZL_DATA',
-                      'para_short_corrRZL_DATA','para_end_corrRZL_DATA']
+        # dict_name_lists = ['resolution','resolution_e','para_long_corrRZ','para_short_corrRZ','para_end_corrRZ','para_long_corrRZL_DATA',
+        #               'para_short_corrRZL_DATA','para_end_corrRZL_DATA']
+
+        full_dict_names = ['para_end_corrRZL_DATA_Ar', 'para_end_corrRZL_DATA_Xe', 'para_end_corrRZL_MC_Ar', 'para_end_corrRZL_MC_Xe', 'para_end_corrRZ_Ar', 'para_end_corrRZ_MC_Ar', 'para_end_corrRZ_MC_Xe', 'para_end_corrRZ_Xe', 'para_end_mimicToXe_DATA_Ar', 'para_end_mimicToXe_DATA_Xe', 'para_end_mimicToXe_MC_Ar', 'para_end_mimicToXe_MC_Xe', 'para_long_corrRZL_DATA_Ar', 'para_long_corrRZL_DATA_Xe', 'para_long_corrRZL_MC_Ar', 'para_long_corrRZL_MC_Xe', 'para_long_corrRZ_Ar', 'para_long_corrRZ_MC_Ar', 'para_long_corrRZ_MC_Xe', 'para_long_corrRZ_Xe', 'para_long_mimicToXe_DATA_Ar', 'para_long_mimicToXe_DATA_Xe', 'para_long_mimicToXe_MC_Ar', 'para_long_mimicToXe_MC_Xe', 'para_short_corrRZL_DATA_Ar', 'para_short_corrRZL_DATA_Xe', 'para_short_corrRZL_MC_Ar', 'para_short_corrRZL_MC_Xe', 'para_short_corrRZ_Ar', 'para_short_corrRZ_MC_Ar', 'para_short_corrRZ_MC_Xe', 'para_short_corrRZ_Xe', 'para_short_mimicToXe_DATA_Ar', 'para_short_mimicToXe_DATA_Xe', 'para_short_mimicToXe_MC_Ar', 'para_short_mimicToXe_MC_Xe', 'resolution_Ar', 'resolution_Xe', 'resolution_e_Ar', 'resolution_e_Xe']
+        if is_data:
+            dict_name_lists = [x for x in full_dict_names if (('MC' not in x) and ('Xe' in x))]
+            dict_name_lists += [x for x in full_dict_names if (('MC' not in x) and ('Ar' in x))]
+            dict_name_lists += [x.replace('Ar','Kr') for x in full_dict_names if (('MC' not in x) and ('Ar' in x))]
+        else:
+            dict_name_lists = [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Xe' in x))]
+            dict_name_lists += [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Ar' in x))]
+            dict_name_lists += [x.replace('Ar','Kr') for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Ar' in x))]
         print ','.join(['"'+x+'"' for x in dict_name_lists])
-        from fillToT import PreFilledToT
+        from fullEDx import FullEdx
         for current_dict in dict_name_lists:
-            output_list.append((current_dict.replace('_MC','').replace('_DATA',''),getattr(PreFilledToT,current_dict)))
+            output_list.append((current_dict.replace('Kr','Ar'),getattr(FullEdx,current_dict)))
         return output_list
 
 
 def main():
 
-        if len(sys.argv) != 2:
-            print "Usage: %s  connection_string" % sys.argv[0]
+        if len(sys.argv) != 3:
+            print "Usage: %s  connection_string data|mc" % sys.argv[0]
             return -1
-        values_dict = read_ToT()
+        if sys.argv[2] !='mc':
+            values_dict = read_ToT(False)
+        else:
+            values_dict = read_ToT(True)
         connect_string = sys.argv[1]
         _logger.info("data: %s" % values_dict)
         try:
