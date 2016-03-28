@@ -35,7 +35,7 @@ def store_ToT_to_folder(db,values_list):
 
         for index, channel_name in enumerate(values_list):
             folder.createChannel(index,channel_name[0])
-            print '%i - %s' % (index, channel_name[0])
+            #print '%i - %s' % (index, channel_name[0])
         folder.setupStorageBuffer()
         for index, channel_values in enumerate(values_list):
             _logger.info('Store data from %s' % channel_values[0])
@@ -96,17 +96,17 @@ def read_ToT(is_data=True):
 
         full_dict_names = ['para_end_corrRZL_DATA_Ar', 'para_end_corrRZL_DATA_Xe', 'para_end_corrRZL_MC_Ar', 'para_end_corrRZL_MC_Xe', 'para_end_corrRZ_Ar', 'para_end_corrRZ_MC_Ar', 'para_end_corrRZ_MC_Xe', 'para_end_corrRZ_Xe', 'para_end_mimicToXe_DATA_Ar', 'para_end_mimicToXe_DATA_Xe', 'para_end_mimicToXe_MC_Ar', 'para_end_mimicToXe_MC_Xe', 'para_long_corrRZL_DATA_Ar', 'para_long_corrRZL_DATA_Xe', 'para_long_corrRZL_MC_Ar', 'para_long_corrRZL_MC_Xe', 'para_long_corrRZ_Ar', 'para_long_corrRZ_MC_Ar', 'para_long_corrRZ_MC_Xe', 'para_long_corrRZ_Xe', 'para_long_mimicToXe_DATA_Ar', 'para_long_mimicToXe_DATA_Xe', 'para_long_mimicToXe_MC_Ar', 'para_long_mimicToXe_MC_Xe', 'para_short_corrRZL_DATA_Ar', 'para_short_corrRZL_DATA_Xe', 'para_short_corrRZL_MC_Ar', 'para_short_corrRZL_MC_Xe', 'para_short_corrRZ_Ar', 'para_short_corrRZ_MC_Ar', 'para_short_corrRZ_MC_Xe', 'para_short_corrRZ_Xe', 'para_short_mimicToXe_DATA_Ar', 'para_short_mimicToXe_DATA_Xe', 'para_short_mimicToXe_MC_Ar', 'para_short_mimicToXe_MC_Xe', 'resolution_Ar', 'resolution_Xe', 'resolution_e_Ar', 'resolution_e_Xe']
         if is_data:
-            dict_name_lists = [x for x in full_dict_names if (('MC' not in x) and ('Xe' in x))]
-            dict_name_lists += [x for x in full_dict_names if (('MC' not in x) and ('Ar' in x))]
-            dict_name_lists += [x.replace('Ar','Kr') for x in full_dict_names if (('MC' not in x) and ('Ar' in x))]
+            dict_name_lists = [x for x in full_dict_names if (('MC' not in x) and ('_Xe' in x))]
+            dict_name_lists += [x for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
+            dict_name_lists += [x.replace('_Ar','_Kr') for x in full_dict_names if (('MC' not in x) and ('_Ar' in x))]
         else:
-            dict_name_lists = [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Xe' in x))]
-            dict_name_lists += [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Ar' in x))]
-            dict_name_lists += [x.replace('Ar','Kr') for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('Ar' in x))]
+            dict_name_lists = [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Xe' in x))]
+            dict_name_lists += [x for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Ar' in x))]
+            dict_name_lists += [x.replace('_Ar','_Kr') for x in full_dict_names if ((('MC' in x) or ('resolution')) and ('_Ar' in x))]
         print ','.join(['"'+x+'"' for x in dict_name_lists])
         from fullEDx import FullEdx
         for current_dict in dict_name_lists:
-            output_list.append((current_dict.replace('Kr','Ar'),getattr(FullEdx,current_dict.replace('Kr','Ar'))))
+            output_list.append((current_dict.replace('_Kr','_Ar'),getattr(FullEdx,current_dict.replace('_Kr','_Ar'))))
         return output_list
 
 
