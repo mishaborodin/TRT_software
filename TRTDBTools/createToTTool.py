@@ -120,7 +120,7 @@ def main():
         else:
             values_dict = read_ToT(True)
         connect_string = sys.argv[1]
-        _logger.info("data: %s" % values_dict)
+        _logger.info("data: %s" % [x[0] for x in values_dict])
         try:
             dbSvc = cool.DatabaseSvcFactory.databaseService()
             _logger.debug('dropping database %s' % connect_string)
