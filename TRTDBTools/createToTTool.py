@@ -38,7 +38,7 @@ def store_ToT_to_folder(db,values_list):
             #print '%i - %s' % (index, channel_name[0])
         folder.setupStorageBuffer()
         for index, channel_values in enumerate(values_list):
-            _logger.info('Store data from %s' % channel_values[0])
+            #_logger.info('Store data from %s' % channel_values[0])
             values = channel_values[1]
             vector = cool.IRecordVector()
             for value in values:
