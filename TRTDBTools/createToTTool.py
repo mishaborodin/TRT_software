@@ -106,7 +106,7 @@ def read_ToT(is_data=True):
         print ','.join(['"'+x+'"' for x in dict_name_lists])
         from fullEDx import FullEdx
         for current_dict in dict_name_lists:
-            output_list.append((current_dict.replace('_Kr','_Ar'),getattr(FullEdx,current_dict.replace('_Kr','_Ar'))))
+            output_list.append((current_dict,getattr(FullEdx,current_dict.replace('_Kr','_Ar'))))
         return output_list
 
 
